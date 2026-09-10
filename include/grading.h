@@ -96,4 +96,14 @@ void findExtremes(const ScoreGrid& scores, int studentIndex,
  */
 [[nodiscard]] bool isAtRisk(const ScoreGrid& scores, int studentIndex);
 
+/**
+ * @brief Counts how many students in the class are at risk.
+ *
+ * @post The scores grid is not modified.
+ *
+ * @param[in] scores The grade grid.
+ * @return The number of students considered at risk.
+ */
+ [[nodiscard]] int countAtRisk(const ScoreGrid& scores);
+
 #endif
