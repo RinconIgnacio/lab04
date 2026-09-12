@@ -87,3 +87,67 @@ bool isAtRisk(const ScoreGrid& scores, int studentIndex) {
 
     return false;
 }
+int countAtRisk(const ScoreGrid& scores) {
+    int count{};
+
+    for (auto i{0}; i < STUDENT_COUNT; i++) {
+        if (isAtRisk(scores, i)) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+void findClassExtremes(const ScoreGrid& scores,
+                       double& lowest,
+                       double& highest,
+                       int& lowestStudent,
+                       int& highestStudent) {
+    lowest = scores[0][0];
+    highest = scores[0][0];
+    lowestStudent = 0;
+    highestStudent = 0;
+
+    for (auto i{0}; i < STUDENT_COUNT; i++) {
+        for (auto j{0}; j < ASSIGNMENT_COUNT; j++) {
+            if (scores[i][j] < lowest) {
+                lowest = scores[i][j];
+                lowestStudent = i;
+            }
+
+            if (scores[i][j] > highest) {
+                highest = scores[i][j];
+                highestStudent = i;
+            }
+        }
+    }
+}
+
+void applyCurve(ScoreGrid& scores, double curvePoints) {
+    for (auto i{0}; i < STUDENT_COUNT; i++) {
+        for (auto j{0}; j < ASSIGNMENT_COUNT; j++) {
+            scores[i][j] += curvePoints;
+
+            if (scores[i][j] > 100.0) {
+                scores[i][j] = 100.0;
+            }
+        }
+    }
+}
+
+int topStudent(const ScoreGrid& scores) {
+    int topIndex{0};
+    double highestAverage{studentAverage(scores, 0)};
+
+    for (auto i{1}; i < STUDENT_COUNT; i++) {
+        double currentAverage{studentAverage(scores, i)};
+
+        if (currentAverage > highestAverage) {
+            highestAverage = currentAverage;
+            topIndex = i;
+        }
+    }
+
+    return topIndex;
+}
